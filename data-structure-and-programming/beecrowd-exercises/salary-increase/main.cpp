@@ -53,8 +53,8 @@ float calculateNewSalary(float salary, float readjustmentRate)
 void printFinalResult(float newSalary, float salaryAdjustmentDifference, int readjustmentInPercentual)
 {
   printf("Novo salario: %.2f\n", newSalary);
-  printf("Reajuste ganho: %.2f", salaryAdjustmentDifference);
-  printf("\nEm percentual: %i \%", readjustmentInPercentual);
+  printf("Reajuste ganho: %.2f\n", salaryAdjustmentDifference);
+  printf("Em percentual: %i %\n", readjustmentInPercentual);
 }
 
 int getRoundedIntegerNumberFromFloat(float number)
@@ -62,15 +62,20 @@ int getRoundedIntegerNumberFromFloat(float number)
   return (int)round(number * 100);
 }
 
-int main()
+void handleSalary(float salary)
 {
-  float userSalary, salaryAdjustmentDifference, newSalary, readjustmentRate;
+  float salaryAdjustmentDifference, newSalary, readjustmentRate;
   int readjustmentInPercentual;
-  // printf("Input your salary:\n");
-  scanf("%f", &userSalary);
-  readjustmentRate = getSalaryReadjustmentRate(userSalary);
-  newSalary = calculateNewSalary(userSalary, readjustmentRate);
-  salaryAdjustmentDifference = newSalary - userSalary;
+  readjustmentRate = getSalaryReadjustmentRate(salary);
+  newSalary = calculateNewSalary(salary, readjustmentRate);
+  salaryAdjustmentDifference = newSalary - salary;
   readjustmentInPercentual = getRoundedIntegerNumberFromFloat(readjustmentRate);
   printFinalResult(newSalary, salaryAdjustmentDifference, readjustmentInPercentual);
+}
+
+int main()
+{
+  float userSalary;
+  scanf("%f", &userSalary);
+  handleSalary(userSalary);
 }
