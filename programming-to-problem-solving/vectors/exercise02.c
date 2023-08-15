@@ -14,7 +14,7 @@ int isOddNumber(int number)
 
 int main()
 {
-  const int QUANTITY_OF_INPUTS = 5;
+  const int QUANTITY_OF_INPUTS = 10;
   int integerNumbers[QUANTITY_OF_INPUTS], highestValue = 0, lowestValue = __INT_MAX__, sumOfAllValues = 0, quantityOfValuesHigherThanTheAverageValue = 0;
   float averageValue = 0;
 

@@ -14,7 +14,7 @@ int isOddNumber(int number)
 
 int main()
 {
-  int integerNumbers[5], sumOfOddNumbers = 0;
+  int integerNumbers[20], sumOfOddNumbers = 0;
   int arrayLength = sizeof(integerNumbers) / sizeof(integerNumbers[1]);
 
   srand(time(NULL));

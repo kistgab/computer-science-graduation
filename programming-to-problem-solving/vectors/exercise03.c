@@ -20,7 +20,7 @@ int isOddNumber(int number)
 
 int main()
 {
-  const int QUANTITY_OF_INPUTS = 5;
+  const int QUANTITY_OF_INPUTS = 30;
   float numbersArray[QUANTITY_OF_INPUTS];
 
   printf("Digite %i valores reais: \n", QUANTITY_OF_INPUTS);
