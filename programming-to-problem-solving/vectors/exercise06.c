@@ -4,6 +4,7 @@
 // cálculos
 
 #include <stdlib.h>
+#include <stdio.h>
 
 void printArray(float array[], int arraySize)
 {
