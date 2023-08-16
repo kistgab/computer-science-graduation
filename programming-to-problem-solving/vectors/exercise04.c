@@ -6,19 +6,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-int isOddNumber(int number)
-{
-  if (number == 0)
-  {
-    return 0;
-  }
-  if (number % 2 == 0)
-  {
-    return 1;
-  }
-  return 0;
-}
-
 void printArray(float array[], int arraySize)
 {
   for (int i = 0; i < arraySize; i++)
