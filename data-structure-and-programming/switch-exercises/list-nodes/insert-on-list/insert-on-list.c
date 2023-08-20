@@ -74,6 +74,44 @@ int main()
     success = 1;
     break;
   case INSERT_IN_MIDDLE_CODE:
+    int positionToInsert;
+
+    printf("Digite a posição que você deseja inserir o conteúdo: \n");
+    scanf("%i", &positionToInsert);
+    if ((FIRST_ARRAY_POSITION == firstListPosition && LAST_ARRAY_POSITION == lastListPosition) ||
+        (positionToInsert > lastListPosition - firstListPosition + 2) ||
+        (positionToInsert <= 0) ||
+        (firstListPosition = 0 && positionToInsert != 1))
+    {
+      printf("Não foi possível realizar a inserção\n");
+      success = 0;
+    }
+    else
+    {
+      if (firstListPosition == 0)
+      {
+        firstListPosition = FIRST_ARRAY_POSITION;
+        lastListPosition = FIRST_ARRAY_POSITION;
+      }
+      else if (lastListPosition != FIRST_ARRAY_POSITION)
+      {
+        for (int i = lastListPosition; i >= firstListPosition + positionToInsert - 1; i--)
+        {
+          linearList[i + 1] = linearList[i];
+        }
+        lastListPosition++;
+      }
+      else
+      {
+        for (int i = firstListPosition; i < firstListPosition + positionToInsert - 2; i++)
+        {
+          linearList[i - 1] = linearList[i];
+        }
+        firstListPosition--;
+      }
+      success = 1;
+      linearList[firstListPosition + positionToInsert - 1] = contentToInsertInList;
+    }
     break;
   case INSERT_IN_END_CODE:
     if (FIRST_ARRAY_POSITION == firstListPosition && LAST_ARRAY_POSITION == lastListPosition)
