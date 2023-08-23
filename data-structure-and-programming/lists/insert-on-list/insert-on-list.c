@@ -105,7 +105,6 @@ int main()
   int firstListPosition = -1, lastListPosition = 0;
   int selectedInsertModeCode;
   struct Account linearList[LIST_SIZE] = {};
-  struct Account userAccount;
   bool success;
 
   setlocale(LC_ALL, "Portuguese");
