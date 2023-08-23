@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <stdbool.h>
 
-#define LIST_SIZE 10
+#define LIST_SIZE 3
 #define FIRST_ARRAY_POSITION 0
 #define LAST_ARRAY_POSITION (LIST_SIZE - 1)
 
 #define INSERT_IN_BEGIN_CODE 1
 #define INSERT_IN_MIDDLE_CODE 2
 #define INSERT_IN_END_CODE 3
+#define END_PROGRAM_CODE 4
 
-struct account
+struct Account
 {
   int id;
   float balance;
@@ -21,135 +23,130 @@ void printMenu()
   printf("%i. INSERIR NO INICIO \n", INSERT_IN_BEGIN_CODE);
   printf("%i. INSERIR NO MEIO \n", INSERT_IN_MIDDLE_CODE);
   printf("%i. INSERIR NO FIM \n", INSERT_IN_END_CODE);
+  printf("%i. FINALIZAR \n", END_PROGRAM_CODE);
 }
 
-int main()
+struct Account readAccountData()
 {
-  int firstListPosition = -1, lastListPosition = 0;
-  int success, selectedInsertModeCode, userAccountId;
+  struct Account userAccount;
+  int userAccountId;
   float userAccountBalance;
-  struct account linearList[LIST_SIZE] = {};
-  struct account contentToInsertInList;
-
-  setlocale(LC_ALL, "Portuguese");
-
-  printMenu();
-  scanf("%i", &selectedInsertModeCode);
 
   printf("Digite o número da conta \n");
   scanf("%i", &userAccountId);
   printf("Digite o saldo inicial \n");
   scanf("%f", &userAccountBalance);
+  userAccount.balance = userAccountBalance;
+  userAccount.id = userAccountId;
 
-  contentToInsertInList.balance = userAccountBalance;
-  contentToInsertInList.id = userAccountId;
+  return userAccount;
+}
 
-  switch (selectedInsertModeCode)
+bool insertInBeggining(struct Account linearList[], int *firstListPosition, int *lastListPosition)
+{
+  struct Account userAccount;
+  userAccount = readAccountData();
+  if (FIRST_ARRAY_POSITION == *firstListPosition && LAST_ARRAY_POSITION == *lastListPosition)
   {
-  case INSERT_IN_BEGIN_CODE:
-    if (FIRST_ARRAY_POSITION == firstListPosition && LAST_ARRAY_POSITION == lastListPosition)
-    {
-      printf("Impossível realizar inserção");
-      success = 0;
-    }
-    else if (firstListPosition == -1)
-    {
-      firstListPosition = 0;
-      lastListPosition = 0;
-    }
-    else if (firstListPosition > FIRST_ARRAY_POSITION)
-    {
-      firstListPosition--;
-    }
-    else
-    {
-      for (int i = lastListPosition; i >= firstListPosition; i--)
-      {
-        linearList[i + 1] = linearList[i];
-      }
-      lastListPosition = lastListPosition + 1;
-    }
-    linearList[firstListPosition] = contentToInsertInList;
-    lastListPosition++;
-    success = 1;
-    break;
-  case INSERT_IN_MIDDLE_CODE:
-    int positionToInsert;
-
-    printf("Digite a posição que você deseja inserir o conteúdo: \n");
-    scanf("%i", &positionToInsert);
-    if ((FIRST_ARRAY_POSITION == firstListPosition && LAST_ARRAY_POSITION == lastListPosition) ||
-        (positionToInsert > lastListPosition - firstListPosition + 2) ||
-        (positionToInsert <= 0) ||
-        (firstListPosition = 0 && positionToInsert != 1))
-    {
-      printf("Não foi possível realizar a inserção\n");
-      success = 0;
-    }
-    else
-    {
-      if (firstListPosition == 0)
-      {
-        firstListPosition = FIRST_ARRAY_POSITION;
-        lastListPosition = FIRST_ARRAY_POSITION;
-      }
-      else if (lastListPosition != FIRST_ARRAY_POSITION)
-      {
-        for (int i = lastListPosition; i >= firstListPosition + positionToInsert - 1; i--)
-        {
-          linearList[i + 1] = linearList[i];
-        }
-        lastListPosition++;
-      }
-      else
-      {
-        for (int i = firstListPosition; i < firstListPosition + positionToInsert - 2; i++)
-        {
-          linearList[i - 1] = linearList[i];
-        }
-        firstListPosition--;
-      }
-      success = 1;
-      linearList[firstListPosition + positionToInsert - 1] = contentToInsertInList;
-    }
-    break;
-  case INSERT_IN_END_CODE:
-    if (FIRST_ARRAY_POSITION == firstListPosition && LAST_ARRAY_POSITION == lastListPosition)
-    {
-      printf("Impossível realizar inserção");
-      success = 0;
-    }
-    else if (firstListPosition == -1)
-    {
-      firstListPosition = 0;
-      lastListPosition = 0;
-    }
-    else if (firstListPosition > FIRST_ARRAY_POSITION)
-    {
-      firstListPosition--;
-    }
-    else
-    {
-      for (int i = firstListPosition; i <= lastListPosition; i--)
-      {
-        linearList[i - 1] = linearList[i];
-      }
-      lastListPosition = lastListPosition - 1;
-    }
-    linearList[firstListPosition] = contentToInsertInList;
-    success = 1;
-    break;
-  default:
-    printf("Código inválido! \n");
-    break;
-  };
-
-  for (int i = 0; i <= lastListPosition; i++)
+    return false;
+  }
+  else if (*firstListPosition == -1)
   {
-    if (linearList[i].id)
+    *firstListPosition = 0;
+    *lastListPosition = 0;
+  }
+  else if (*firstListPosition > FIRST_ARRAY_POSITION)
+  {
+    (*firstListPosition)--;
+  }
+  else
+  {
+    for (int i = *lastListPosition; i >= *firstListPosition; i--)
     {
-      printf("Posição %d - \n", i);
-      printf("    AccountId: %d \n", linearList[i].id);
+      linearList[i + 1] = linearList[i];
     }
+    (*lastListPosition)++;
+  }
+  linearList[*firstListPosition] = userAccount;
+  return true;
+}
+
+bool insertInEnd(struct Account linearList[], int *firstListPosition, int *lastListPosition)
+{
+  struct Account userAccount;
+  userAccount = readAccountData();
+  if (FIRST_ARRAY_POSITION == *firstListPosition && LAST_ARRAY_POSITION == *lastListPosition)
+  {
+    return false;
+  }
+  else if (*firstListPosition == -1)
+  {
+    *firstListPosition = 0;
+    *lastListPosition = 0;
+  }
+  else if (*lastListPosition < LAST_ARRAY_POSITION)
+  {
+    (*lastListPosition)++;
+  }
+  else
+  {
+    for (int i = *firstListPosition; i <= *lastListPosition; i++)
+    {
+      linearList[i - 1] = linearList[i];
+    }
+    (*firstListPosition)--;
+  }
+  linearList[*lastListPosition] = userAccount;
+  return true;
+}
+
+int main()
+{
+  int firstListPosition = -1, lastListPosition = 0;
+  int selectedInsertModeCode;
+  struct Account linearList[LIST_SIZE] = {};
+  struct Account userAccount;
+  bool success;
+
+  setlocale(LC_ALL, "Portuguese");
+
+  printMenu();
+  scanf("%i", &selectedInsertModeCode);
+  while (selectedInsertModeCode != END_PROGRAM_CODE)
+  {
+    switch (selectedInsertModeCode)
+    {
+    case INSERT_IN_BEGIN_CODE:
+      success = insertInBeggining(linearList, &firstListPosition, &lastListPosition);
+      break;
+    case INSERT_IN_MIDDLE_CODE:
+    {
+    }
+    case INSERT_IN_END_CODE:
+      success = insertInEnd(linearList, &firstListPosition, &lastListPosition);
+      break;
+    default:
+    {
+      printf("Código inválido! \n");
+      break;
+    }
+    };
+    if (success)
+    {
+      for (int i = 0; i <= lastListPosition; i++)
+      {
+        printf("Posição %d - \n     AccountId: %d \n\n", i, linearList[i].id);
+      }
+    }
+    else
+    {
+      printf("********************************\n");
+      printf("* Impossível realizar inserção *\n");
+      printf("* Array permanece igual!       *\n");
+      printf("********************************\n");
+    }
+
+    printMenu();
+    scanf("%i", &selectedInsertModeCode);
   }
 }
