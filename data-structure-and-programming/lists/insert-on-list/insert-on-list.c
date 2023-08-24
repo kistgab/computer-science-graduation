@@ -8,9 +8,10 @@
 #define LAST_ARRAY_POSITION (LIST_SIZE - 1)
 
 #define INSERT_IN_BEGIN_CODE 1
-#define INSERT_IN_MIDDLE_CODE 2
+#define INSERT_IN_POSITION_CODE 2
 #define INSERT_IN_END_CODE 3
-#define END_PROGRAM_CODE 4
+#define REMOVE_IN_POSITION_CODE 4
+#define END_PROGRAM_CODE 10
 
 struct Account
 {
@@ -21,8 +22,9 @@ struct Account
 void printMenu()
 {
   printf("%i. INSERIR NO INICIO \n", INSERT_IN_BEGIN_CODE);
-  printf("%i. INSERIR NO MEIO \n", INSERT_IN_MIDDLE_CODE);
+  printf("%i. INSERIR NA POSIÇÃO \n", INSERT_IN_POSITION_CODE);
   printf("%i. INSERIR NO FIM \n", INSERT_IN_END_CODE);
+  printf("%i. REMOVER NA POSIÇÃO \n", REMOVE_IN_POSITION_CODE);
   printf("%i. FINALIZAR \n", END_PROGRAM_CODE);
 }
 
@@ -71,9 +73,10 @@ bool insertInBeggining(struct Account linearList[], int *firstListPosition, int 
   return true;
 }
 
-bool insertInMiddle(struct Account linearList[], int *firstListPosition, int *lastListPosition)
+bool insertInPosition(struct Account linearList[], int *firstListPosition, int *lastListPosition)
 {
   struct Account userAccount;
+  userAccount = readAccountData();
   int positionToInsert;
   printf("Digite a posição para inserir: \n");
   scanf("%i", &positionToInsert);
@@ -107,7 +110,7 @@ bool insertInMiddle(struct Account linearList[], int *firstListPosition, int *la
       (*firstListPosition)--;
     }
   }
-  linearList[*firstListPosition + positionToInsert] = readAccountData();
+  linearList[*firstListPosition + positionToInsert] = userAccount;
   return true;
 }
 
@@ -140,6 +143,32 @@ bool insertInEnd(struct Account linearList[], int *firstListPosition, int *lastL
   return true;
 }
 
+bool removeInPosition(struct Account linearList[], int *firstListPosition, int *lastListPosition)
+{
+  int positionToRemove, firstPositionToStartDeslocating;
+  printf("Digite a posição para remover: \n");
+  scanf("%i", &positionToRemove);
+
+  if (positionToRemove < FIRST_ARRAY_POSITION || positionToRemove > *lastListPosition - *firstListPosition)
+  {
+    return false;
+  }
+
+  firstPositionToStartDeslocating = *firstListPosition + positionToRemove;
+  for (int i = firstPositionToStartDeslocating; i < *lastListPosition; i++)
+  {
+    int positionAfterCurrentIndex = i + 1;
+    linearList[i] = linearList[positionAfterCurrentIndex];
+  }
+  (*lastListPosition)--;
+  if (*lastListPosition == *firstListPosition - 1)
+  {
+    *firstListPosition = 0;
+    *lastListPosition = 0;
+  }
+  return true;
+}
+
 int main()
 {
   int firstListPosition = -1, lastListPosition = 0;
@@ -158,17 +187,18 @@ int main()
     case INSERT_IN_BEGIN_CODE:
       success = insertInBeggining(linearList, &firstListPosition, &lastListPosition);
       break;
-    case INSERT_IN_MIDDLE_CODE:
-      success = insertInMiddle(linearList, &firstListPosition, &lastListPosition);
+    case INSERT_IN_POSITION_CODE:
+      success = insertInPosition(linearList, &firstListPosition, &lastListPosition);
       break;
     case INSERT_IN_END_CODE:
       success = insertInEnd(linearList, &firstListPosition, &lastListPosition);
       break;
+    case REMOVE_IN_POSITION_CODE:
+      success = removeInPosition(linearList, &firstListPosition, &lastListPosition);
+      break;
     default:
-    {
       printf("Código inválido! \n");
       break;
-    }
     };
     if (success)
     {
@@ -179,7 +209,6 @@ int main()
     }
     else
     {
-      system("shutdown");
       printf("********************************\n");
       printf("* Impossível realizar inserção *\n");
       printf("* Lista permanece igual!       *\n");
