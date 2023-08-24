@@ -3,7 +3,7 @@
 #include <locale.h>
 #include <stdbool.h>
 
-#define LIST_SIZE 10
+#define LIST_SIZE 3
 #define FIRST_ARRAY_POSITION 0
 #define LAST_ARRAY_POSITION (LIST_SIZE - 1)
 
@@ -77,12 +77,10 @@ bool insertInMiddle(struct Account linearList[], int *firstListPosition, int *la
   int positionToInsert;
   printf("Digite a posição para inserir: \n");
   scanf("%i", &positionToInsert);
-  // positionToInsert--;
   if (positionToInsert > *lastListPosition || positionToInsert < *firstListPosition)
   {
     return false;
   }
-  userAccount = readAccountData();
 
   if (FIRST_ARRAY_POSITION == *firstListPosition && LAST_ARRAY_POSITION == *lastListPosition)
   {
@@ -109,7 +107,7 @@ bool insertInMiddle(struct Account linearList[], int *firstListPosition, int *la
       (*firstListPosition)--;
     }
   }
-  linearList[*firstListPosition + positionToInsert] = userAccount;
+  linearList[*firstListPosition + positionToInsert] = readAccountData();
   return true;
 }
 
@@ -181,6 +179,7 @@ int main()
     }
     else
     {
+      system("shutdown");
       printf("********************************\n");
       printf("* Impossível realizar inserção *\n");
       printf("* Lista permanece igual!       *\n");
