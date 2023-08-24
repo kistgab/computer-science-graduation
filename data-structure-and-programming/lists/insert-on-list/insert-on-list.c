@@ -3,7 +3,7 @@
 #include <locale.h>
 #include <stdbool.h>
 
-#define LIST_SIZE 3
+#define LIST_SIZE 10
 #define FIRST_ARRAY_POSITION 0
 #define LAST_ARRAY_POSITION (LIST_SIZE - 1)
 
@@ -71,6 +71,48 @@ bool insertInBeggining(struct Account linearList[], int *firstListPosition, int 
   return true;
 }
 
+bool insertInMiddle(struct Account linearList[], int *firstListPosition, int *lastListPosition)
+{
+  struct Account userAccount;
+  int positionToInsert;
+  printf("Digite a posição para inserir: \n");
+  scanf("%i", &positionToInsert);
+  // positionToInsert--;
+  if (positionToInsert > *lastListPosition || positionToInsert < *firstListPosition)
+  {
+    return false;
+  }
+  userAccount = readAccountData();
+
+  if (FIRST_ARRAY_POSITION == *firstListPosition && LAST_ARRAY_POSITION == *lastListPosition)
+  {
+    return false;
+  }
+  else if (*firstListPosition == -1)
+  {
+    *firstListPosition = 0;
+    *lastListPosition = 0;
+  }
+  else if (*lastListPosition != LAST_ARRAY_POSITION)
+  {
+    for (int i = *lastListPosition; i <= *firstListPosition + positionToInsert; i--)
+    {
+      linearList[i + 1] = linearList[i];
+      (*lastListPosition)++;
+    }
+  }
+  else
+  {
+    for (int i = *firstListPosition; i <= *firstListPosition + positionToInsert - 1; i++)
+    {
+      linearList[i - 1] = linearList[i];
+      (*firstListPosition)--;
+    }
+  }
+  linearList[*firstListPosition + positionToInsert] = userAccount;
+  return true;
+}
+
 bool insertInEnd(struct Account linearList[], int *firstListPosition, int *lastListPosition)
 {
   struct Account userAccount;
@@ -119,8 +161,8 @@ int main()
       success = insertInBeggining(linearList, &firstListPosition, &lastListPosition);
       break;
     case INSERT_IN_MIDDLE_CODE:
-    {
-    }
+      success = insertInMiddle(linearList, &firstListPosition, &lastListPosition);
+      break;
     case INSERT_IN_END_CODE:
       success = insertInEnd(linearList, &firstListPosition, &lastListPosition);
       break;
@@ -141,7 +183,7 @@ int main()
     {
       printf("********************************\n");
       printf("* Impossível realizar inserção *\n");
-      printf("* Array permanece igual!       *\n");
+      printf("* Lista permanece igual!       *\n");
       printf("********************************\n");
     }
 
