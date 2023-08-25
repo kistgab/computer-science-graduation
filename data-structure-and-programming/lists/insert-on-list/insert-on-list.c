@@ -215,8 +215,8 @@ int main()
     else
     {
       printf("********************************\n");
-      printf("* Impossível realizar inserção *\n");
-      printf("* Lista permanece igual!       *\n");
+      printf("* Impossível realizar operação *\n");
+      printf("* Lista permaneceu igual!       *\n");
       printf("********************************\n");
     }
 
