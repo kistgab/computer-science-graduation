@@ -160,7 +160,7 @@ bool removeInPosition(struct Account linearList[], int *firstListPosition, int *
   }
 
   firstPositionToStartDeslocating = *firstListPosition + positionToRemove;
-  for (int i = firstPositionToStartDeslocating; i < *lastListPosition; i++)
+  for (int i = firstPositionToStartDeslocating; i <= *lastListPosition; i++)
   {
     int positionAfterCurrentIndex = i + 1;
     linearList[i] = linearList[positionAfterCurrentIndex];
@@ -168,8 +168,8 @@ bool removeInPosition(struct Account linearList[], int *firstListPosition, int *
   (*lastListPosition)--;
   if (*lastListPosition == *firstListPosition - 1)
   {
-    *firstListPosition = 0;
-    *lastListPosition = 0;
+    *firstListPosition = -1;
+    *lastListPosition = -1;
   }
   return true;
 }
