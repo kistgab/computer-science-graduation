@@ -75,42 +75,47 @@ bool insertInBeggining(struct Account linearList[], int *firstListPosition, int 
 
 bool insertInPosition(struct Account linearList[], int *firstListPosition, int *lastListPosition)
 {
-  struct Account userAccount;
-  userAccount = readAccountData();
-  int positionToInsert;
+  int positionToInsert = 0;
   printf("Digite a posição para inserir: \n");
   scanf("%i", &positionToInsert);
-  if (positionToInsert > *lastListPosition || positionToInsert < *firstListPosition)
+  if ((FIRST_ARRAY_POSITION == *firstListPosition && LAST_ARRAY_POSITION == *lastListPosition))
   {
     return false;
   }
-
-  if (FIRST_ARRAY_POSITION == *firstListPosition && LAST_ARRAY_POSITION == *lastListPosition)
+  if (positionToInsert > *lastListPosition - *firstListPosition + 1)
   {
     return false;
   }
-  else if (*firstListPosition == -1)
+  if (positionToInsert < 0)
+  {
+    return false;
+  }
+  if (*firstListPosition == -1 && positionToInsert != FIRST_ARRAY_POSITION)
+  {
+    return false;
+  }
+  if (*firstListPosition == -1)
   {
     *firstListPosition = 0;
     *lastListPosition = 0;
   }
   else if (*lastListPosition != LAST_ARRAY_POSITION)
   {
-    for (int i = *lastListPosition; i <= *firstListPosition + positionToInsert; i--)
+    for (int i = (*lastListPosition); i >= ((*firstListPosition) + positionToInsert); i--)
     {
       linearList[i + 1] = linearList[i];
-      (*lastListPosition)++;
     }
+    (*lastListPosition)++;
   }
   else
   {
     for (int i = *firstListPosition; i <= *firstListPosition + positionToInsert - 1; i++)
     {
       linearList[i - 1] = linearList[i];
-      (*firstListPosition)--;
     }
+    (*firstListPosition)--;
   }
-  linearList[*firstListPosition + positionToInsert] = userAccount;
+  linearList[*firstListPosition + positionToInsert] = readAccountData();
   return true;
 }
 
