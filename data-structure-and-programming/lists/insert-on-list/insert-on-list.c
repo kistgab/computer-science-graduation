@@ -11,6 +11,7 @@
 #define INSERT_IN_POSITION_CODE 2
 #define INSERT_IN_END_CODE 3
 #define REMOVE_IN_POSITION_CODE 4
+#define LIST_SIZE_CODE 5
 #define END_PROGRAM_CODE 10
 
 struct Account
@@ -25,7 +26,16 @@ void printMenu()
   printf("%i. INSERIR NA POSIÇÃO \n", INSERT_IN_POSITION_CODE);
   printf("%i. INSERIR NO FIM \n", INSERT_IN_END_CODE);
   printf("%i. REMOVER NA POSIÇÃO \n", REMOVE_IN_POSITION_CODE);
+  printf("%i. MOSTRAR TAMANHO DA LISTA \n", LIST_SIZE_CODE);
   printf("%i. FINALIZAR \n", END_PROGRAM_CODE);
+}
+
+void printErrorMenu()
+{
+  printf("********************************\n");
+  printf("* Impossível realizar operação *\n");
+  printf("* Lista permaneceu igual!       *\n");
+  printf("********************************\n");
 }
 
 struct Account readAccountData()
@@ -174,6 +184,15 @@ bool removeInPosition(struct Account linearList[], int *firstListPosition, int *
   return true;
 }
 
+void printListSize(int *firstListPosition, int *lastListPosition)
+{
+  int listSize;
+  listSize = *lastListPosition - *firstListPosition;
+  printf("firslist pos: %i", *firstListPosition);
+  printf("lastlist pos: %i", *lastListPosition);
+  printf("O tamanho da lista é de: %i nodos", listSize);
+}
+
 int main()
 {
   int firstListPosition = -1, lastListPosition = 0;
@@ -201,6 +220,9 @@ int main()
     case REMOVE_IN_POSITION_CODE:
       success = removeInPosition(linearList, &firstListPosition, &lastListPosition);
       break;
+    case LIST_SIZE_CODE:
+      printListSize(&firstListPosition, &lastListPosition);
+      break;
     default:
       printf("Código inválido! \n");
       break;
@@ -214,12 +236,8 @@ int main()
     }
     else
     {
-      printf("********************************\n");
-      printf("* Impossível realizar operação *\n");
-      printf("* Lista permaneceu igual!       *\n");
-      printf("********************************\n");
+      printErrorMenu();
     }
-
     printMenu();
     scanf("%i", &selectedInsertModeCode);
   }
