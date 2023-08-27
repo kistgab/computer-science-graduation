@@ -13,6 +13,7 @@
 #define REMOVE_IN_POSITION_CODE 4
 #define LIST_SIZE_CODE 5
 #define PRINT_LIST_CODE 6
+#define ACCESS_LIST_NODE_CODE 7
 #define END_PROGRAM_CODE 10
 
 struct Account
@@ -29,6 +30,7 @@ void printMenu()
   printf("%i. Remover na posição \n", REMOVE_IN_POSITION_CODE);
   printf("%i. Mostrar tamanho da lista \n", LIST_SIZE_CODE);
   printf("%i. Mostrar conteúdo da lista \n", PRINT_LIST_CODE);
+  printf("%i. Mostrar conteúdo do Nodo lista \n", ACCESS_LIST_NODE_CODE);
   printf("%i. Finalizar aplicação \n", END_PROGRAM_CODE);
 }
 
@@ -205,12 +207,36 @@ void printListIfCondition(bool shouldPrintList, struct Account linearList[], int
     printf("Lista vazia! \n\n");
     return;
   }
-  printf("****** CONTEÚDO DA LISTA ******");
+  printf("\n****** CONTEÚDO DA LISTA ****** \n");
   for (int i = 0; i <= *lastListPosition; i++)
   {
     printf("Posição %d - \n     AccountId: %d - R$ %.2f \n\n", i, linearList[i].id, linearList[i].balance);
   }
-  printf("******  ******");
+  printf("******                   ****** \ns");
+}
+
+bool printNodeContent(struct Account linearList[], int *firstListPosition, int *lastListPosition)
+{
+  int nodePosition;
+  struct Account nodeContent;
+  printf("Digite a posição do Nodo que você quer ler: \n");
+  scanf("%i", &nodePosition);
+
+  if (nodePosition < 0)
+  {
+    return false;
+  }
+  if (nodePosition > *lastListPosition - *firstListPosition + 1)
+  {
+    return false;
+  }
+  if (*firstListPosition == -1)
+  {
+    return false;
+  }
+  nodeContent = linearList[*firstListPosition + nodePosition];
+  printf("Posição %d - \n     AccountId: %d - R$ %.2f \n\n", nodePosition, nodeContent.id, nodeContent.balance);
+  return true;
 }
 
 int main()
@@ -249,6 +275,9 @@ int main()
     case PRINT_LIST_CODE:
       printListIfCondition(true, linearList, &lastListPosition);
       success = true;
+      break;
+    case ACCESS_LIST_NODE_CODE:
+      success = printNodeContent(linearList, &firstListPosition, &lastListPosition);
       break;
     default:
       printf("Código inválido! \n\n");
