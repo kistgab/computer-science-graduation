@@ -193,13 +193,17 @@ bool removeInPosition(struct Account linearList[], int *firstListPosition, int *
 bool printListSize(int *firstListPosition, int *lastListPosition)
 {
   int listSize;
-  if (*firstListPosition == 0 && *lastListPosition == 0)
+  if (*firstListPosition == -1)
+  {
+    listSize = 0;
+  }
+  else if (*firstListPosition == 0 && *lastListPosition == 0)
   {
     listSize = 1;
   }
   else
   {
-    listSize = *lastListPosition - (*firstListPosition);
+    listSize = *lastListPosition - (*firstListPosition) + 1;
   }
   printf("O tamanho da lista é de: %i nodos\n\n\n", listSize);
   return true;
