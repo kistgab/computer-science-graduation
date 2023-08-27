@@ -12,6 +12,7 @@
 #define INSERT_IN_END_CODE 3
 #define REMOVE_IN_POSITION_CODE 4
 #define LIST_SIZE_CODE 5
+#define PRINT_LIST_CODE 6
 #define END_PROGRAM_CODE 10
 
 struct Account
@@ -22,12 +23,13 @@ struct Account
 
 void printMenu()
 {
-  printf("%i. INSERIR NO INICIO \n", INSERT_IN_BEGIN_CODE);
-  printf("%i. INSERIR NA POSIÇÃO \n", INSERT_IN_POSITION_CODE);
-  printf("%i. INSERIR NO FIM \n", INSERT_IN_END_CODE);
-  printf("%i. REMOVER NA POSIÇÃO \n", REMOVE_IN_POSITION_CODE);
-  printf("%i. MOSTRAR TAMANHO DA LISTA \n", LIST_SIZE_CODE);
-  printf("%i. FINALIZAR \n", END_PROGRAM_CODE);
+  printf("%i. Inserir no inicio \n", INSERT_IN_BEGIN_CODE);
+  printf("%i. Inserir na posição \n", INSERT_IN_POSITION_CODE);
+  printf("%i. Inserir no fim \n", INSERT_IN_END_CODE);
+  printf("%i. Remover na posição \n", REMOVE_IN_POSITION_CODE);
+  printf("%i. Mostrar tamanho da lista \n", LIST_SIZE_CODE);
+  printf("%i. Mostrar conteúdo da lista \n", PRINT_LIST_CODE);
+  printf("%i. Finalizar aplicação \n", END_PROGRAM_CODE);
 }
 
 void printErrorMenu()
@@ -184,61 +186,78 @@ bool removeInPosition(struct Account linearList[], int *firstListPosition, int *
   return true;
 }
 
-void printListSize(int *firstListPosition, int *lastListPosition)
+bool printListSize(int *firstListPosition, int *lastListPosition)
 {
   int listSize;
-  listSize = *lastListPosition - *firstListPosition;
-  printf("firslist pos: %i", *firstListPosition);
-  printf("lastlist pos: %i", *lastListPosition);
-  printf("O tamanho da lista é de: %i nodos", listSize);
+  listSize = *lastListPosition - (*firstListPosition);
+  printf("O tamanho da lista é de: %i nodos\n\n\n", listSize);
+  return true;
+}
+
+void printListIfCondition(bool shouldPrintList, struct Account linearList[], int *lastListPosition)
+{
+  if (!shouldPrintList)
+  {
+    return;
+  }
+  if (*lastListPosition == -1)
+  {
+    printf("Lista vazia! \n\n");
+    return;
+  }
+  printf("****** CONTEÚDO DA LISTA ******");
+  for (int i = 0; i <= *lastListPosition; i++)
+  {
+    printf("Posição %d - \n     AccountId: %d - R$ %.2f \n\n", i, linearList[i].id, linearList[i].balance);
+  }
+  printf("******  ******");
 }
 
 int main()
 {
-  int firstListPosition = -1, lastListPosition = 0;
+  int firstListPosition = -1, lastListPosition = -1;
   int selectedInsertModeCode;
   struct Account linearList[LIST_SIZE] = {};
   bool success;
 
   setlocale(LC_ALL, "Portuguese");
-
-  printMenu();
-  scanf("%i", &selectedInsertModeCode);
   while (selectedInsertModeCode != END_PROGRAM_CODE)
   {
+    printMenu();
+    scanf("%i", &selectedInsertModeCode);
     switch (selectedInsertModeCode)
     {
     case INSERT_IN_BEGIN_CODE:
       success = insertInBeggining(linearList, &firstListPosition, &lastListPosition);
+      printListIfCondition(success, linearList, &lastListPosition);
       break;
     case INSERT_IN_POSITION_CODE:
       success = insertInPosition(linearList, &firstListPosition, &lastListPosition);
+      printListIfCondition(success, linearList, &lastListPosition);
       break;
     case INSERT_IN_END_CODE:
       success = insertInEnd(linearList, &firstListPosition, &lastListPosition);
+      printListIfCondition(success, linearList, &lastListPosition);
       break;
     case REMOVE_IN_POSITION_CODE:
       success = removeInPosition(linearList, &firstListPosition, &lastListPosition);
+      printListIfCondition(success, linearList, &lastListPosition);
       break;
     case LIST_SIZE_CODE:
-      printListSize(&firstListPosition, &lastListPosition);
+      success = printListSize(&firstListPosition, &lastListPosition);
+      break;
+    case PRINT_LIST_CODE:
+      printListIfCondition(true, linearList, &lastListPosition);
+      success = true;
       break;
     default:
-      printf("Código inválido! \n");
+      printf("Código inválido! \n\n");
       break;
     };
-    if (success)
-    {
-      for (int i = 0; i <= lastListPosition; i++)
-      {
-        printf("Posição %d - \n     AccountId: %d \n\n", i, linearList[i].id);
-      }
-    }
-    else
+
+    if (!success)
     {
       printErrorMenu();
     }
-    printMenu();
-    scanf("%i", &selectedInsertModeCode);
   }
 }
