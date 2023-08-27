@@ -14,6 +14,7 @@
 #define LIST_SIZE_CODE 5
 #define PRINT_LIST_CODE 6
 #define ACCESS_LIST_NODE_CODE 7
+#define GET_POSITION_BY_VALUE_CODE 8
 #define END_PROGRAM_CODE 10
 
 struct Account
@@ -31,6 +32,7 @@ void printMenu()
   printf("%i. Mostrar tamanho da lista \n", LIST_SIZE_CODE);
   printf("%i. Mostrar conteúdo da lista \n", PRINT_LIST_CODE);
   printf("%i. Mostrar conteúdo do Nodo lista \n", ACCESS_LIST_NODE_CODE);
+  printf("%i. Retornar posição da lista do valor digitado \n", GET_POSITION_BY_VALUE_CODE);
   printf("%i. Finalizar aplicação \n", END_PROGRAM_CODE);
 }
 
@@ -219,7 +221,7 @@ void printListIfCondition(bool shouldPrintList, struct Account linearList[], int
   {
     printf("Posição %d - \n     AccountId: %d - R$ %.2f \n\n", i, linearList[i].id, linearList[i].balance);
   }
-  printf("******                   ****** \ns");
+  printf("******                   ****** \n\n\n");
 }
 
 bool printNodeContent(struct Account linearList[], int *firstListPosition, int *lastListPosition)
@@ -244,6 +246,30 @@ bool printNodeContent(struct Account linearList[], int *firstListPosition, int *
   nodeContent = linearList[*firstListPosition + nodePosition];
   printf("Posição %d - \n     AccountId: %d - R$ %.2f \n\n", nodePosition, nodeContent.id, nodeContent.balance);
   return true;
+}
+
+bool getPositionByValue(struct Account linearList[], int *firstListPosition, int *lastListPosition)
+{
+  int accountIdToSearchFor, foundPosition = -1;
+  printf("Digite o Id da conta que você procura: \n");
+  scanf("%i", &accountIdToSearchFor);
+
+  for (int i = *firstListPosition; i <= *lastListPosition; i++)
+  {
+    if (accountIdToSearchFor == linearList[i].id)
+    {
+      foundPosition = i;
+      break;
+    }
+  }
+  if (foundPosition != -1)
+  {
+    printf("\n\n********* POSIÇÃO ENCONTRADA *********\n");
+    printf("A posição com esse Id de conta é: %i\n", foundPosition);
+    printf("********* *********\n");
+    return true;
+  }
+  return false;
 }
 
 int main()
@@ -285,6 +311,9 @@ int main()
       break;
     case ACCESS_LIST_NODE_CODE:
       success = printNodeContent(linearList, &firstListPosition, &lastListPosition);
+      break;
+    case GET_POSITION_BY_VALUE_CODE:
+      success = getPositionByValue(linearList, &firstListPosition, &lastListPosition);
       break;
     default:
       printf("Código inválido! \n\n");
