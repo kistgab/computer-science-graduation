@@ -14,7 +14,7 @@
 #define LIST_SIZE_CODE 5
 #define PRINT_LIST_CODE 6
 #define ACCESS_LIST_NODE_CODE 7
-#define GET_POSITION_BY_VALUE_CODE 8
+#define GET_BALANCE_BY_ACCOUNT_ID 8
 #define END_PROGRAM_CODE 10
 
 struct Account
@@ -28,11 +28,11 @@ void printMenu()
   printf("%i. Inserir no inicio \n", INSERT_IN_BEGIN_CODE);
   printf("%i. Inserir na posição \n", INSERT_IN_POSITION_CODE);
   printf("%i. Inserir no fim \n", INSERT_IN_END_CODE);
-  printf("%i. Remover na posição \n", REMOVE_IN_POSITION_CODE);
+  printf("%i. Remover da posição \n", REMOVE_IN_POSITION_CODE);
   printf("%i. Mostrar tamanho da lista \n", LIST_SIZE_CODE);
   printf("%i. Mostrar conteúdo da lista \n", PRINT_LIST_CODE);
-  printf("%i. Mostrar conteúdo do Nodo lista \n", ACCESS_LIST_NODE_CODE);
-  printf("%i. Retornar posição da lista do valor digitado \n", GET_POSITION_BY_VALUE_CODE);
+  printf("%i. Mostrar conteúdo do Nódo K da lista \n", ACCESS_LIST_NODE_CODE);
+  printf("%i. Retornar saldo da conta informada \n", GET_BALANCE_BY_ACCOUNT_ID);
   printf("%i. Finalizar aplicação \n", END_PROGRAM_CODE);
 }
 
@@ -167,7 +167,7 @@ bool insertInEnd(struct Account linearList[], int *firstListPosition, int *lastL
 bool removeInPosition(struct Account linearList[], int *firstListPosition, int *lastListPosition)
 {
   int positionToRemove, firstPositionToStartDeslocating;
-  printf("Digite a posição para remover: \n");
+  printf("Digite o nódo para remover: (começa em 0)\n");
   scanf("%i", &positionToRemove);
 
   if (positionToRemove < FIRST_ARRAY_POSITION || positionToRemove > *lastListPosition - *firstListPosition)
@@ -205,7 +205,7 @@ bool printListSize(int *firstListPosition, int *lastListPosition)
   {
     listSize = *lastListPosition - (*firstListPosition) + 1;
   }
-  printf("O tamanho da lista é de: %i nodos\n\n\n", listSize);
+  printf("O tamanho da lista é de: %i nódos\n\n\n", listSize);
   return true;
 }
 
@@ -223,7 +223,7 @@ void printListIfCondition(bool shouldPrintList, struct Account linearList[], int
   printf("\n****** CONTEÚDO DA LISTA ****** \n");
   for (int i = 0; i <= *lastListPosition; i++)
   {
-    printf("Posição %d - \n     AccountId: %d - R$ %.2f \n\n", i, linearList[i].id, linearList[i].balance);
+    printf("Nódo %d - \n     AccountId: %d - R$ %.2f \n\n", i, linearList[i].id, linearList[i].balance);
   }
   printf("******                   ****** \n\n\n");
 }
@@ -232,7 +232,7 @@ bool printNodeContent(struct Account linearList[], int *firstListPosition, int *
 {
   int nodePosition;
   struct Account nodeContent;
-  printf("Digite a posição do Nodo que você quer ler: \n");
+  printf("Digite a posição do Nódo que você quer ler: (começa em 0)\n");
   scanf("%i", &nodePosition);
 
   if (nodePosition < 0)
@@ -248,11 +248,11 @@ bool printNodeContent(struct Account linearList[], int *firstListPosition, int *
     return false;
   }
   nodeContent = linearList[*firstListPosition + nodePosition];
-  printf("Posição %d - \n     AccountId: %d - R$ %.2f \n\n", nodePosition, nodeContent.id, nodeContent.balance);
+  printf("Nódo %d - \n     AccountId: %d - R$ %.2f \n\n", nodePosition, nodeContent.id, nodeContent.balance);
   return true;
 }
 
-bool getPositionByValue(struct Account linearList[], int *firstListPosition, int *lastListPosition)
+bool getBalanceByAccountId(struct Account linearList[], int *firstListPosition, int *lastListPosition)
 {
   int accountIdToSearchFor, foundPosition = -1;
   printf("Digite o Id da conta que você procura: \n");
@@ -269,7 +269,8 @@ bool getPositionByValue(struct Account linearList[], int *firstListPosition, int
   if (foundPosition != -1)
   {
     printf("\n\n********* POSIÇÃO ENCONTRADA *********\n");
-    printf("A posição com esse Id de conta é: %i\n", foundPosition);
+    printf("O Nódo com esse Id de conta é o: %i\n", foundPosition);
+    printf("O saldo da conta é de: %.2f\n", linearList[foundPosition].balance);
     printf("********* *********\n");
     return true;
   }
@@ -316,8 +317,8 @@ int main()
     case ACCESS_LIST_NODE_CODE:
       success = printNodeContent(linearList, &firstListPosition, &lastListPosition);
       break;
-    case GET_POSITION_BY_VALUE_CODE:
-      success = getPositionByValue(linearList, &firstListPosition, &lastListPosition);
+    case GET_BALANCE_BY_ACCOUNT_ID:
+      success = getBalanceByAccountId(linearList, &firstListPosition, &lastListPosition);
       break;
     default:
       printf("Código inválido! \n\n");
