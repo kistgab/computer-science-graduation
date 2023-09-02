@@ -93,7 +93,6 @@ int main()
 {
   int lastStackPosition, userSelectedOption = 0;
   bool success;
-  Person personToInsert;
   Person stack[ARRAY_SIZE];
 
   setlocale(LC_ALL, "Portuguese");
