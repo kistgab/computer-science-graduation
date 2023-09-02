@@ -8,7 +8,7 @@ typedef struct book
 {
   int id;
   int releasedAtYear;
-  char publisher[128];
+  char publisherName[128];
   char name[128];
 } Book;
 
@@ -36,7 +36,7 @@ void printBookData(Book book)
   printf("Livro: \n");
   printf("  Código: %i\n", book.id);
   printf("  Nome: %s\n", book.name);
-  printf("  Editora: %s\n", book.publisher);
+  printf("  Editora: %s\n", book.publisherName);
   printf("  Ano de lançamento: %i\n", book.releasedAtYear);
   printf("\n\n");
 }
@@ -47,30 +47,38 @@ void initializeQueue(int *firstPosition, int *lastPosition)
   *lastPosition = LOWEST_QUEUE_LIMIT - 1;
 }
 
+void readString(char *destination, int maxLength)
+{
+  if (fgets(destination, maxLength, stdin))
+  {
+    destination[strcspn(destination, "\n")] = '\0';
+  }
+}
+
 Book readBookData()
 {
   Book book;
-
   printf("\n");
-  printf("Informar dados da pessoa:\n");
+  printf("Informar dados do livro:\n");
   printf("Digite o código do livro:\n");
   scanf("%i", &book.id);
+  getchar();
   printf("Digite o nome do livro:\n");
-  scanf("%s", &book.name);
+  readString(book.name, sizeof(book.name));
   printf("Digite o nome da editora:\n");
-  scanf("%s", &book.publisher);
+  readString(book.publisherName, sizeof(book.publisherName));
   printf("Digite o ano de lançamento:\n");
-  scanf("%f", &book.releasedAtYear);
+  scanf("%i", &book.releasedAtYear);
   return book;
 }
 
 bool insertInQueue(Book queue[], int *firstQueuePosition, int *lastQueuePosition)
 {
-  if ((*lastQueuePosition == *firstQueuePosition - 1) && *firstQueuePosition == LOWEST_QUEUE_LIMIT)
+  if (*lastQueuePosition == *firstQueuePosition - 1)
   {
     return false;
   }
-  if (*lastQueuePosition == HIGHEST_QUEUE_LIMIT)
+  if ((*firstQueuePosition == LOWEST_QUEUE_LIMIT && *lastQueuePosition == HIGHEST_QUEUE_LIMIT))
   {
     return false;
   }
@@ -91,7 +99,7 @@ bool insertInQueue(Book queue[], int *firstQueuePosition, int *lastQueuePosition
   return true;
 }
 
-bool removeFromQueue(Book queue[], int *firstQueuePosition, int *lastQueuePosition)
+bool removeFromQueue(int *firstQueuePosition, int *lastQueuePosition)
 {
   if (*firstQueuePosition == LOWEST_QUEUE_LIMIT - 1)
   {
@@ -142,7 +150,7 @@ int main()
       sucess = insertInQueue(queue, &firstQueuePosition, &lastQueuePosition);
       break;
     case DELETE_OPTION_CODE:
-      sucess = removeFromQueue(queue, &firstQueuePosition, &lastQueuePosition);
+      sucess = removeFromQueue(&firstQueuePosition, &lastQueuePosition);
       break;
     case PRINT_LAST_OPTION_CODE:
       sucess = printNextFromQueue(queue, &firstQueuePosition);
@@ -161,6 +169,7 @@ int main()
     if (firstQueuePosition >= LOWEST_QUEUE_LIMIT)
     {
       printf("\n");
+      printf("A fila começa na posição %i e termina na posição %i:\n", firstQueuePosition, lastQueuePosition);
       printf("O valor da posição %i (primeira) é:\n", firstQueuePosition);
       printBookData(queue[firstQueuePosition]);
     }
