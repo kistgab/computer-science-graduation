@@ -113,6 +113,16 @@ bool removeFromQueue(Book queue[], int *firstQueuePosition, int *lastQueuePositi
   return true;
 }
 
+bool printNextFromQueue(Book queue[], int *firstQueuePosition)
+{
+  if (*firstQueuePosition == LOWEST_QUEUE_LIMIT - 1)
+  {
+    return false;
+  }
+  printBookData(queue[*firstQueuePosition]);
+  return true;
+}
+
 int main()
 {
   int userSelectedOption, firstQueuePosition, lastQueuePosition;
@@ -129,13 +139,13 @@ int main()
     switch (userSelectedOption)
     {
     case INSERT_OPTION_CODE:
-      sucess = false;
+      sucess = insertInQueue(queue, &firstQueuePosition, &lastQueuePosition);
       break;
     case DELETE_OPTION_CODE:
-      sucess = false;
+      sucess = removeFromQueue(queue, &firstQueuePosition, &lastQueuePosition);
       break;
     case PRINT_LAST_OPTION_CODE:
-      sucess = false;
+      sucess = printNextFromQueue(queue, &firstQueuePosition);
       break;
     default:
       printf("Código inexistente!\n");
