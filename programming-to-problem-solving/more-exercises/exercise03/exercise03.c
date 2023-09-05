@@ -21,14 +21,20 @@ typedef struct gambler
 
 void readTeamsNames(char *firstTeamName, char *secondTeamName)
 {
+  system("clear");
+  printf("********************************** \n");
+  printf("*         DADOS DOS TIMES        * \n");
+  printf("********************************** \n");
   printf("Digite o nome do primeiro time do jogo: \n");
   scanf("%s", firstTeamName);
   printf("Digite o nome do segundo time do jogo: \n");
   scanf("%s", secondTeamName);
+  system("clear");
 }
 
 void readGamblersData(Gambler gamblers[], int quantityOfGamblers, char *firstTeamName, char *secondTeamName)
 {
+  system("clear");
   for (int i = 0; i < quantityOfGamblers; i++)
   {
     gamblers[i].points = 0;
