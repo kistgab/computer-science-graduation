@@ -21,6 +21,7 @@ void readUserInput(int *inputtedNumber)
   printf("Digite um número inteiro para calcular a taboada: \n");
   scanf("%i", inputtedNumber);
 }
+
 void readIfHasToContinue(char *charVariable)
 {
   printf("Caso deseje parar digite 'N', para continuar 'S' \n");
