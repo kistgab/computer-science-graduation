@@ -27,11 +27,6 @@ void readIfHasToContinue(char *charVariable)
   scanf("%s", charVariable);
 }
 
-bool isOddNumber(int number)
-{
-  return number % 2 == 0;
-}
-
 int main()
 {
   int userInputNumber;
