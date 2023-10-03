@@ -1,0 +1,1 @@
+Faça um programa que preencha uma matriz M 2 x 2 na função principal. Através de uma função sem retorno calcule e mostre a matriz resultante da multiplicação dos elementos de M pelo seu maior elemento.
