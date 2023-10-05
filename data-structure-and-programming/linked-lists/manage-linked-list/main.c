@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 
 typedef struct node
 {
@@ -141,6 +142,8 @@ void printMenu()
 
 int main()
 {
+  setlocale(LC_ALL, "Portuguese");
+
   int selectedOption = 0;
   Node *head = NULL;
 
