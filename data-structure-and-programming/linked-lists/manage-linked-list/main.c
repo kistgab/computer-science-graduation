@@ -27,32 +27,26 @@ void insertAtPosition(Node **head, int value, int position)
     printf("Posição inválida. Posição deve ser >= 1.\n");
     return;
   }
-
   Node *newNode = createNode(value);
-
   if (position == 1)
   {
     newNode->next = *head;
     *head = newNode;
     return;
   }
-
   Node *current = *head;
   int currentPosition = 1;
-
   while (current != NULL && currentPosition < position - 1)
   {
     current = current->next;
     currentPosition++;
   }
-
   if (current == NULL)
   {
     printf("A posição que deseja é maior que o tamanho da lista.\n");
     free(newNode);
     return;
   }
-
   newNode->next = current->next;
   current->next = newNode;
 }
@@ -62,16 +56,13 @@ void removeFromPosition(Node **head, int position)
   if (position < 1)
   {
     printf("Posição inválida. Posição deve ser >= 1.\n");
-
     return;
   }
-
   if (*head == NULL)
   {
     printf("A lista está vazia! Nada para remover!\n");
     return;
   }
-
   if (position == 1)
   {
     Node *temp = *head;
@@ -79,22 +70,18 @@ void removeFromPosition(Node **head, int position)
     free(temp);
     return;
   }
-
   Node *current = *head;
   int currentPosition = 1;
-
   while (current != NULL && currentPosition < position - 1)
   {
     current = current->next;
     currentPosition++;
   }
-
   if (current == NULL || current->next == NULL)
   {
     printf("A posição que deseja é maior que o tamanho da lista.\n");
     return;
   }
-
   Node *temp = current->next;
   current->next = current->next->next;
   free(temp);
@@ -107,28 +94,25 @@ void searchAtPosition(Node *head, int position)
     printf("Posição inválida. Posição deve ser >= 1.\n");
     return;
   }
-
   Node *current = head;
   int currentPosition = 1;
-
   while (current != NULL && currentPosition < position)
   {
     current = current->next;
     currentPosition++;
   }
-
   if (current == NULL)
   {
     printf("A posição que deseja é maior que o tamanho da lista.\n");
     return;
   }
-
   printf("Valor encontrado: %d \n", current->value);
 }
 
 void printList(Node *head)
 {
   Node *current = head;
+
   while (current != NULL)
   {
     printf("%d -> ", current->value);
