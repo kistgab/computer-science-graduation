@@ -50,28 +50,28 @@ int countNodes(Node *head)
 
 void countHigherAndEqual(Node *head, int valor)
 {
-  int contador_igual = 0;
-  int contador_maior = 0;
-  int posicao = 1;
+  int equalCounter = 0;
+  int higherCounter = 0;
+  int currentPosition = 1;
   Node *current = head;
 
   while (current != NULL)
   {
     if (current->data == valor)
     {
-      contador_igual++;
-      printf("Nodo com valor %d encontrado na posição %d\n", valor, posicao);
+      equalCounter++;
+      printf("Nodo com valor %d encontrado na posição %d\n", valor, currentPosition);
     }
     else if (current->data > valor)
     {
-      contador_maior++;
+      higherCounter++;
     }
     current = current->nextNode;
-    posicao++;
+    currentPosition++;
   }
 
-  printf("Total de nodos com valor igual a %d: %d\n", valor, contador_igual);
-  printf("Total de nodos com valor maior que %d: %d\n", valor, contador_maior);
+  printf("Total de nodos com valor igual a %d: %d\n", valor, equalCounter);
+  printf("Total de nodos com valor maior que %d: %d\n", valor, higherCounter);
 }
 
 void printList(Node *head)
@@ -96,7 +96,7 @@ void printMenu()
 int main()
 {
   Node *head = NULL;
-  int oldValue, newValue, inputValue;
+  int valueToSearch, inputValue;
   printMenu();
   while (1)
   {
@@ -109,8 +109,8 @@ int main()
   }
 
   printf("Digite o valor para pesquisar na lista: ");
-  scanf("%d", &oldValue);
+  scanf("%d", &valueToSearch);
 
   countNodes(head);
-  countHigherAndEqual(head, oldValue);
+  countHigherAndEqual(head, valueToSearch);
 }
